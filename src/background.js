@@ -51,21 +51,14 @@ chrome.webRequest.onCompleted.addListener(
                 clacks[details.tabId] = newClacks;
                 showPageAction(details.tabId);
                 if (DEBUG) console.log("store");
+            } else {
+                delete clacks[details.tabId];
+                hidePageAction(details.tabId);
             }
         }
     },
     {urls: ["<all_urls>"]},
     ["responseHeaders"]
-);
-
-// clear clacks on navigation to a new page
-chrome.webNavigation.onCommitted.addListener(
-    function(details) {
-        if (details.transitionType !== "auto_subframe") {
-            delete clacks[details.tabId];
-            hidePageAction(details.tabId);
-        }
-    }
 );
 
 // listen to messages from content scripts
